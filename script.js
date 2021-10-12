@@ -31,9 +31,7 @@ svg.append("circle")
     .attr("r", 5)
     .attr("fill", "blue");
 
-
-let rect = d3.select("rect");
-
+//déplacement du joueur délimiter dans la zone 
 function positionJoueur(e) {
 
 
@@ -44,14 +42,7 @@ function positionJoueur(e) {
             .attr("cx", pointer[0])
             .attr("cy", "85");
 
-    }
-    // if (pointer[1] > 100) {
-    //     d3.select("#joueur")
-    //         .attr("cx", pointer[0])
-    //         .attr("cy", "100");
-    // }
-    
-    else {
+    } else {
         d3.select("#joueur")
             .attr("cx", pointer[0])
             .attr("cy", pointer[1])
@@ -62,33 +53,10 @@ function positionJoueur(e) {
 }
 
 
-//dÃ©placement
+//déplacement
 svg.on("mousemove", function (e) {
     positionJoueur(e);
 })
 
 
 
-
-
-
-// svg.append("circle")
-// .attr("cx",10)
-// .attr("cy",10)
-// .attr("r",5)
-// .attr("fill","blue");
-
-
-//puis un fantome, qui sera toujours au premier plan (initialement invisible)
-
-
-
-// svg.on("mouseenter", function(e) {    
-//         positionFantome(e);
-//         d3.select("#fantome")
-//             .style("display",null)});
-
-// svg.on("mouseleave", function(e) {
-//                 d3.select("#fantome")
-//                     .style("display","none")
-//             } );
