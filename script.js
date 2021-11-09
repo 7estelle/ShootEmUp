@@ -1,10 +1,7 @@
 let svg = d3.select("svg");
-<<<<<<< Updated upstream
 
-
-=======
 let viesRestantes = 3;
->>>>>>> Stashed changes
+let score = 0;
 svg.style("background-color", "black");
 
 // Panneau d'indication en haut
@@ -14,7 +11,7 @@ d3.select("section")
 
 d3.select("section")
     .append("p")
-    .text("Score : ");
+    .text(`Score : ${score}`);
 
 
 // Zone du joueur (rouge)
@@ -28,7 +25,7 @@ d3.select("svg")
 
 
 // Avatar du joueur
-<<<<<<< Updated upstream
+
 svg.append("circle")
     .attr("id", "joueur")
     .attr("cx", 50)
@@ -65,7 +62,7 @@ svg.on("mousemove", function (e) {
 
 
 
-=======
+
 svg.select("rect")
 .append("circle")
 .attr("cx",10)
@@ -95,12 +92,8 @@ svg.select("rect")
 
 
 
-// ENNEMIS (q7)
-let positionEnnemis=[
-    {x:entierAlea(100),y:0, vy:1},
-    {x:entierAlea(100),y:0, vy:2},
-    {x:entierAlea(100),y:0, vy:3}
-];
+// ENNEMIS (q7-q8)
+let positionEnnemis=[];
 
 function entierAlea(n) {
     return Math.floor(Math.random()*n);
@@ -141,16 +134,18 @@ setInterval(mouvementEnnemis, 100);
 setInterval(function(){
     positionEnnemis.push({x:entierAlea(100),y:0, vy:vitesseAlea(1,3)});
     creationSuppressionEnnemis();
-}, 2000);
+}, 500);
 
 // Si un ennemi touche le bord opposé, le joueur perd une vie (q9)
-
 compteVies();
 function compteVies() {
     positionEnnemis.forEach(d=>{        
-    if(d.y = 85){
+    if(d.y == 85){
         viesRestantes = viesRestantes-1;
+        console.log("vies:"+viesRestantes);
+        placeEnnemis();
     }
+
 })
 }
->>>>>>> Stashed changes
+
