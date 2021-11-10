@@ -36,31 +36,34 @@ svg.append("circle")
 //déplacement du joueur délimiter dans la zone 
 function positionJoueur(e) {
 
-
     let pointer = d3.pointer(e);
 
     if (pointer[1] < 85) {
         d3.select("#joueur")
             .attr("cx", pointer[0])
             .attr("cy", "85");
-
     } else {
         d3.select("#joueur")
             .attr("cx", pointer[0])
             .attr("cy", pointer[1])
     }
 
-
-
 }
-
-
-//déplacement
-svg.on("mousemove", function (e) {
+//entrée
+svg.on("mouseenter", function(e) {    
     positionJoueur(e);
-})
-
-
+    d3.select("#joueur")
+        .style("display",null)
+} )
+//déplacement
+svg.on("mousemove", function(e) {
+    positionJoueur(e);    
+} )
+//sortie
+svg.on("mouseleave", function(e) {
+    d3.select("#joueur")
+        .style("display","none")
+} )
 
 
 svg.select("rect")
@@ -137,15 +140,41 @@ setInterval(function(){
 }, 500);
 
 // Si un ennemi touche le bord opposé, le joueur perd une vie (q9)
-compteVies();
+
 function compteVies() {
     positionEnnemis.forEach(d=>{        
     if(d.y == 85){
         viesRestantes = viesRestantes-1;
         console.log("vies:"+viesRestantes);
-        placeEnnemis();
     }
-
 })
 }
+compteVies();
 
+// TIRS
+
+// le joueur tir à intervalles réguliers (q10)
+// let positionTirs=[];
+// function tirsJoueur(){
+//     let pointer = d3.pointer(e);
+//     d3.select("#joueur")
+//     let lien = svg.selectAll(".balle")
+//         .data(pointer);
+//     lien.enter()
+//         .append("use")
+//         .attr("class", "balle")
+//         .attr("href", "#defs_balle");
+//     lien.exit()
+//         .remove();    
+//     placeTirs();
+// }
+// function placeTirs() {
+//     svg.selectAll(".balle") 
+//         .attr("transform", d=>`translate(${d.x},${d.y})`);
+// }
+// tirsJoueur();
+// //toutes les 500ms: une nouvelle balle est tirée
+// setInterval(function(){
+//     positionTirs.push({x:entierAlea(100),y:0, vy:3});
+//     tirsJoueur();
+// }, 500);
