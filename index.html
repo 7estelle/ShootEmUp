@@ -1,41 +1,60 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jeu ESTL et Benji</title>
-    <script src="d3.js"></script> 
+    <script src="d3.js"></script>
 </head>
+
 <body>
-    <h1>Jeu réalisé par Laroche et Lay</h1>
+    <h1>Jeu réalisé par Benjamin Laroche et Estelle Lay</h1>
     <section>
+        <p>Nombre de vies restantes : <span class="afficheVies">3</span></p>
+        <p>Score : <span class="afficheScore">0</span></p>
         <!-- Panneau qui indique le nombre de vies restantes en haut -->
     </section>
 
-<svg width="75vmin" height="75vmin" viewBox="0 0 100 100" >
+    <svg width="75vmin" height="75vmin" viewBox="0 0 100 100">
 
-    <defs>
-        <g id="def_ennemi">
-            <image xlink:href="medias/mechant.png" width="9.5" height="10.2" x="-9" y="-7"/>
-            <circle r=.2 fill="yellow"></circle>
-        </g>
-    </defs>
-
-    <defs>
-        <g id="defs_balle">
-            <circle r=1 fill="yellow" id="balle"></circle>
-        </g>
-    </defs>
-
-</svg>
+        <!-- Zone du joueur (rouge) -->
+        <rect x="0" y="85" width="100" height="15" fill="red" id="zoneRouge"></rect>
 
 
-<!--
+        <defs>
+            <!-- Photo de l'ennemi -->
+            <g id="def_ennemi">
+                <image xlink:href="medias/mechant.png" width="7"/>
+            </g>
+            <!-- Photo de la balle ennemie -->
+            <g id="def_balle_enn">
+                <circle r=2 fill="green" id="balleEnn"></circle>
+            </g>
+
+            <!-- Photo du joueur -->
+            <g id="def_joueur">
+                <circle r=5 fill="blue" id="joueur" style="pointer-events: none;"></circle>
+            </g>
+            <!-- Photo de la balle joueur -->
+            <g id="def_balle">
+                <circle r=2 fill="yellow" id="balle"></circle>
+            </g>
+
+        </defs>
+
+
+
+
+    </svg>
+
+
+    <!--
 Le script est appelé en dernier, il sera lancé uniquement lorsque le document sera prêt
 alternative: document.addEventListener("DOMContentLoaded", function() {/*...*/ });
 -->
-    <script src="script.js"></script>  
+    <script src="script.js"></script>
 </body>
 
 </html>

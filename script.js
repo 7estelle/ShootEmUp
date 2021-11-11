@@ -1,180 +1,234 @@
-let svg = d3.select("svg");
+// VARIABLES
 
-let viesRestantes = 3;
+let svg = d3.select("svg");
+let zoneRouge = d3.select("#zoneRouge");
+let joueurX = 50;
+let joueurY = 90;
+let vies = 3;
 let score = 0;
+
+
 svg.style("background-color", "black");
 
-// Panneau d'indication en haut
-d3.select("section")
-    .append("p")
-    .text(`Nombre de vies restantes : ${viesRestantes}`);
 
-d3.select("section")
-    .append("p")
-    .text(`Score : ${score}`);
-
-
-// Zone du joueur (rouge)
-d3.select("svg")
-    .append("rect")
-    .attr("x", 0)
-    .attr("y", 85)
-    .attr("width", "100")
-    .attr("height", "15")
-    .attr("fill", "red");
-
-
-// Avatar du joueur
-
-svg.append("circle")
+// récupérer le design du joueur
+svg.append("use")
     .attr("id", "joueur")
-    .attr("cx", 50)
-    .attr("cy", 90)
-    .attr("r", 5)
-    .attr("fill", "blue");
+    .attr("href", "#def_joueur")
+// .attr("x","50")
+// .attr("y","90");
 
-//déplacement du joueur délimiter dans la zone 
+//déplacement du joueur délimité dans la zone
 function positionJoueur(e) {
-
     let pointer = d3.pointer(e);
-
-    if (pointer[1] < 85) {
-        d3.select("#joueur")
-            .attr("cx", pointer[0])
-            .attr("cy", "85");
-    } else {
-        d3.select("#joueur")
-            .attr("cx", pointer[0])
-            .attr("cy", pointer[1])
-    }
-
+    joueurX = pointer[0];
+    joueurY = pointer[1];
+    svg.select("#joueur")
+        .attr("transform",`translate(${joueurX},${joueurY})`);
 }
-//entrée
-svg.on("mouseenter", function(e) {    
+
+//déplacement au survol
+zoneRouge.on("mousemove", function (e) {
     positionJoueur(e);
-    d3.select("#joueur")
-        .style("display",null)
-} )
-//déplacement
-svg.on("mousemove", function(e) {
-    positionJoueur(e);    
-} )
-//sortie
-svg.on("mouseleave", function(e) {
-    d3.select("#joueur")
-        .style("display","none")
-} )
-
-
-svg.select("rect")
-.append("circle")
-.attr("cx",10)
-.attr("cy",10)
-.attr("r",50)
-.attr("fill","blue");
-
-
-// puis un fantome, qui sera toujours au premier plan (initialement invisible)
-// svg.append("use")
-//     .attr("id","fantome")
-//     .attr("href", "#spirale")
-//     .style("display","none")
-//     .style("z-index",2)
-//     .style("opacity",".5");
-
-
-// svg.on("mouseenter", function(e) {    
-//         positionFantome(e);
-//         d3.select("#fantome")
-//             .style("display",null)});
-
-// svg.on("mouseleave", function(e) {
-//                 d3.select("#fantome")
-//                     .style("display","none")
-//             } );
+})
 
 
 
 // ENNEMIS (q7-q8)
-let positionEnnemis=[];
+let positionEnnemis = [];
 
 function entierAlea(n) {
-    return Math.floor(Math.random()*n);
+    return Math.floor(Math.random() * n);
 }
+
 function vitesseAlea(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min +1)) + min;
-  }
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
-function creationSuppressionEnnemis(){
-    let lien = svg.selectAll(".ennemi")
-        .data(positionEnnemis);
-    lien.enter()
+function creationSuppressionEnnemis() {
+    svg.selectAll(".ennemi")
+        .data(positionEnnemis)
+        .enter()
         .append("use")
         .attr("class", "ennemi")
-        .attr("href", "#def_ennemi");
-    lien.exit()
-        .remove();    
+        .attr("href", "#def_ennemi")
+        .exit()
+        .remove();
     placeEnnemis();
 }
+
 function placeEnnemis() {
-    svg.selectAll(".ennemi") 
-        .attr("transform", d=>`translate(${d.x},${d.y})`);
+    svg.selectAll(".ennemi")
+        .attr("transform", d => `translate(${d.x},${d.y})`);
 }
+
 function mouvementEnnemis() {
-    positionEnnemis.forEach(d=>{        
+    positionEnnemis.forEach(d => {
         //chaque ennemi se déplace de sa vitesse en y
-        d.y+=d.vy;
+        d.y += d.vy;
     })
+
+        //tous les points dans positionEnnemis ont ennemiVisible(d) = true
+    if(positionEnnemis.every(ennemiVisible)){
+        placeEnnemis();
+    }else{
+        //au moins un ennemi est est arrivé au bord, on le retire du tableau
+        positionEnnemis=positionEnnemis.filter(ennemiVisible);
+        creationSuppressionEnnemis();
+        compteVies();
+    }
     //les coordonnées ont été modifiées, on fait la mise à jour
     placeEnnemis();
 }
+
+function ennemiVisible(d){
+    return d.y<80;
+}
+
 creationSuppressionEnnemis();
 setInterval(mouvementEnnemis, 100);
 
-//toutes les 2000ms: un nouvel ennemi est ajouté
-setInterval(function(){
-    positionEnnemis.push({x:entierAlea(100),y:0, vy:vitesseAlea(1,3)});
+//toutes les 1000ms: un nouvel ennemi est ajouté
+setInterval(function () {
+    positionEnnemis.push({
+        x: entierAlea(100),
+        y: 0,
+        vy: vitesseAlea(1, 3)
+    });
     creationSuppressionEnnemis();
-}, 500);
+}, 1000);
 
 // Si un ennemi touche le bord opposé, le joueur perd une vie (q9)
-
-function compteVies() {
-    positionEnnemis.forEach(d=>{        
-    if(d.y == 85){
-        viesRestantes = viesRestantes-1;
-        console.log("vies:"+viesRestantes);
-    }
-})
+function compteVies(){
+    vies--;
+    console.log(vies);
+    d3.select(".afficheVies")
+    .html(vies);
 }
-compteVies();
+
+
+
 
 // TIRS
 
-// le joueur tir à intervalles réguliers (q10)
-// let positionTirs=[];
-// function tirsJoueur(){
-//     let pointer = d3.pointer(e);
-//     d3.select("#joueur")
-//     let lien = svg.selectAll(".balle")
-//         .data(pointer);
-//     lien.enter()
-//         .append("use")
-//         .attr("class", "balle")
-//         .attr("href", "#defs_balle");
-//     lien.exit()
-//         .remove();    
-//     placeTirs();
+// // le joueur tire à intervalles réguliers (q10)
+
+// TIRS JOUEUR
+let coordonneesTir = [];
+
+function nouveauTir() {
+    // console.log(joueurX, joueurY);
+    coordonneesTir.push({
+        x: joueurX,
+        y: joueurY,
+        vy: -1
+    });
+    tirsJoueur();
+    // console.log(coordonneesTir);
+}
+
+function tirsJoueur() {
+    svg
+        .selectAll(".balle")
+        .data(coordonneesTir)
+        .enter()
+        .append("use")
+        .attr("class", "balle")
+        .attr("href", "#def_balle")
+        .exit()
+        .remove();
+    placeTirs();
+}
+
+function placeTirs() {
+    svg.selectAll(".balle")
+        .attr("transform", d => `translate(${d.x},${d.y})`);
+}
+
+function mouvementTirs() {
+    coordonneesTir.forEach(d => {
+        //chaque tir se déplace en y
+        d.y = d.y - 1;
+    })
+    tirsJoueur();
+    // console.log("X= "+joueurX);
+    // console.log("Y= "+joueurY);
+}
+setInterval(nouveauTir, 500);
+setInterval(mouvementTirs, 50);
+
+
+
+// TIRS ENNEMIS
+
+let coordonneesTirEnn = [];
+
+function nouveauTirEnn() {
+    positionEnnemis.forEach(position => {
+        coordonneesTirEnn.push({
+            x: position.x + 4,
+            y: position.y + 10,
+            vy: position.vy
+        });
+    })
+    tirsEnnemis();
+}
+
+function tirsEnnemis() {
+    svg
+        .selectAll(".balleEnn")
+        .data(coordonneesTirEnn)
+        .enter()
+        .append("use")
+        .attr("class", "balleEnn")
+        .attr("href", "#def_balle_enn")
+        .exit()
+        .remove();
+    placeTirsEnn();
+}
+
+function placeTirsEnn() {
+    svg.selectAll(".balleEnn")
+        .attr("transform", d => `translate(${d.x},${d.y})`);
+}
+
+function mouvementTirsEnn() {
+    coordonneesTirEnn.forEach(d => {
+        //chaque tir se déplace de sa vitesse en y
+        d.y += d.vy;
+    })
+    tirsEnnemis();
+}
+
+setInterval(nouveauTirEnn, 2000);
+setInterval(mouvementTirsEnn, 50);
+
+
+
+// PAUSE, FIN ETC (brouillon)
+// document.addEventListener("keyup",function(e){
+
+// })
+
+// function compteVies(){
+//     vies--;
+//     contenu_vie.html(vies);
+//     if(vies==0){
+//         pause = true;
+//         fairePause();
+//         fin();
+//     }
 // }
-// function placeTirs() {
-//     svg.selectAll(".balle") 
-//         .attr("transform", d=>`translate(${d.x},${d.y})`);
+
+// function fairePause(){
+// if(pause==true){
+//     pause = false
 // }
-// tirsJoueur();
-// //toutes les 500ms: une nouvelle balle est tirée
-// setInterval(function(){
-//     positionTirs.push({x:entierAlea(100),y:0, vy:3});
-//     tirsJoueur();
-// }, 500);
+// }
+
+// function fin(){
+//     d3.select("messageFin").style("display","flex");
+// }
+
