@@ -13,6 +13,12 @@
     .messageFin{
         background-color: rgb(226, 116, 116) ;
         display: none;
+        width:40%;
+        height: 30%;
+        box-shadow: 0px 0px 0px 100vh rgba(0,0,0,0.32);
+        position: absolute;
+        left: 50%;
+        
     }
 </style>
 
@@ -53,8 +59,9 @@
 
     </svg>
 
-    <div class="messageFin"><p>GAME OVER<br>Vous êtes mort<br>Score : <span class="afficheScore">0</span></p><a href="#">Recommencer la partie</a></div>
+    <div class="messageFin"><p>GAME OVER<br> CHEE Vous êtes mort<br>Score : <span class="afficheScore">0</span></p><a href="#">Recommencer la partie</a></div>
 
+    <button class="sucide">button de sucide</button>
     <!--
 Le script est appelé en dernier, il sera lancé uniquement lorsque le document sera prêt
 alternative: document.addEventListener("DOMContentLoaded", function() {/*...*/ });

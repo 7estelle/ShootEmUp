@@ -6,6 +6,7 @@ let joueurX = 50;
 let joueurY = 90;
 let vies = 3;
 let score = 0;
+let afficheVies = document.querySelector('.afficheVies')
 
 
 svg.style("background-color", "black");
@@ -78,6 +79,7 @@ function mouvementEnnemis() {
         positionEnnemis = positionEnnemis.filter(limiteZone);
         creationSuppressionEnnemis();
         compteVies();
+       
     }
     //les coordonnées ont été modifiées, on fait la mise à jour
     placeEnnemis();
@@ -264,26 +266,15 @@ if(event.keyCode == 32){
 
 //     }
 // })
+// pour le comptage des vies 
 
-// function compteVies(){
-//     vies--;
-//     contenu_vie.html(vies);
-//     if(vies==0){
-//         pause = true;
-//         fairePause();
-//         fin();
-//     }
-// }
 
 
 
 // FIN (brouillon)
-// function fin(){
-//     if(vies==0){
-//         d3.select("messageFin").style("display","block");
-//     }
-//     if (vies>0){
-//         d3.select("messageFin").style("display","none");
-//     }
-// }
-// fin();
+function fin(){
+    if(vies==0){
+        d3.select(".messageFin").style("display","block");
+    }
+}
+fin();
