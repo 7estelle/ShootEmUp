@@ -70,12 +70,12 @@ function mouvementEnnemis() {
         d.y += d.vy;
     })
 
-        //tous les points dans positionEnnemis ont ennemiVisible(d) = true
-    if(positionEnnemis.every(ennemiVisible)){
+        //tous les points dans positionEnnemis ont limiteZone(d) = true
+    if(positionEnnemis.every(limiteZone)){
         placeEnnemis();
     }else{
         //au moins un ennemi est est arrivé au bord, on le retire du tableau
-        positionEnnemis=positionEnnemis.filter(ennemiVisible);
+        positionEnnemis=positionEnnemis.filter(limiteZone);
         creationSuppressionEnnemis();
         compteVies();
     }
@@ -83,8 +83,8 @@ function mouvementEnnemis() {
     placeEnnemis();
 }
 
-function ennemiVisible(d){
-    return d.y<80;
+function limiteZone(d){
+    return d.y<83;
 }
 
 creationSuppressionEnnemis();
@@ -199,8 +199,17 @@ function mouvementTirsEnn() {
         //chaque tir se déplace de sa vitesse en y
         d.y += d.vy;
     })
+            //tous les points dans positionEnnemis ont limiteZone(d) = true
+            if(coordonneesTirEnn.every(limiteZone)){
+                placeEnnemis();
+            }else{
+                //au moins un ennemi est est arrivé au bord, on le retire du tableau
+                coordonneesTirEnn=coordonneesTirEnn.filter(limiteZone);
+                tirsEnnemis();
+            }
     tirsEnnemis();
 }
+
 
 setInterval(nouveauTirEnn, 2000);
 setInterval(mouvementTirsEnn, 50);
