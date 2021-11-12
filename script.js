@@ -24,7 +24,7 @@ function positionJoueur(e) {
     joueurX = pointer[0];
     joueurY = pointer[1];
     svg.select("#joueur")
-        .attr("transform",`translate(${joueurX},${joueurY})`);
+        .attr("transform", `translate(${joueurX},${joueurY})`);
 }
 
 //déplacement au survol
@@ -70,12 +70,12 @@ function mouvementEnnemis() {
         d.y += d.vy;
     })
 
-        //tous les points dans positionEnnemis ont limiteZone(d) = true
-    if(positionEnnemis.every(limiteZone)){
+    //tous les points dans positionEnnemis ont limiteZone(d) = true
+    if (positionEnnemis.every(limiteZone)) {
         placeEnnemis();
-    }else{
+    } else {
         //au moins un ennemi est est arrivé au bord, on le retire du tableau
-        positionEnnemis=positionEnnemis.filter(limiteZone);
+        positionEnnemis = positionEnnemis.filter(limiteZone);
         creationSuppressionEnnemis();
         compteVies();
     }
@@ -83,29 +83,30 @@ function mouvementEnnemis() {
     placeEnnemis();
 }
 
-function limiteZone(d){
-    return d.y<83;
+function limiteZone(d) {
+    return d.y < 83;
 }
 
 creationSuppressionEnnemis();
 setInterval(mouvementEnnemis, 100);
 
 //toutes les 1000ms: un nouvel ennemi est ajouté
-setInterval(function () {
+function nouvelEnnemi() {
     positionEnnemis.push({
         x: entierAlea(100),
         y: 0,
         vy: vitesseAlea(1, 3)
     });
     creationSuppressionEnnemis();
-}, 1000);
+}
+setInterval(nouvelEnnemi, 1000);
 
 // Si un ennemi touche le bord opposé, le joueur perd une vie (q9)
-function compteVies(){
+function compteVies() {
     vies--;
     console.log(vies);
     d3.select(".afficheVies")
-    .html(vies);
+        .html(vies);
 }
 
 
@@ -199,26 +200,69 @@ function mouvementTirsEnn() {
         //chaque tir se déplace de sa vitesse en y
         d.y += d.vy;
     })
-            //tous les points dans positionEnnemis ont limiteZone(d) = true
-            if(coordonneesTirEnn.every(limiteZone)){
-                placeEnnemis();
-            }else{
-                //au moins un ennemi est est arrivé au bord, on le retire du tableau
-                coordonneesTirEnn=coordonneesTirEnn.filter(limiteZone);
-                tirsEnnemis();
-            }
+    //tous les points dans positionEnnemis ont limiteZone(d) = true
+    if (coordonneesTirEnn.every(limiteZone)) {
+        placeEnnemis();
+    } else {
+        //au moins un ennemi est est arrivé au bord, on le retire du tableau
+        coordonneesTirEnn = coordonneesTirEnn.filter(limiteZone);
+        tirsEnnemis();
+    }
     tirsEnnemis();
 }
 
-
-setInterval(nouveauTirEnn, 2000);
-setInterval(mouvementTirsEnn, 50);
+let pause = false;
+setInterval(function () {
+    if (pause != true) {
+        nouveauTirEnn()
+    }
+}, 2000);
+setInterval(function () {
+    if (pause != true) {
+        mouvementTirsEnn()
+    }
+}, 50);
 
 
 
 // PAUSE (brouillon)
-// document.addEventListener("keyup",function(e){
 
+
+// function fairePause() {
+//     clearInterval(mouvementEnnemis);
+//     clearInterval(nouvelEnnemi);
+//     clearInterval(mouvementTirs);
+//     clearInterval(nouveauTir);
+//     clearInterval(mouvementTirsEnn);
+//     clearInterval(nouveauTirEnn);
+// }
+
+
+document.addEventListener("keyup", function(event){
+if(event.keyCode == 32){
+    if(pause==true){
+        pause=false;
+    }else{
+        pause=true;
+    }
+}
+})
+// d3.select('body').on('keypress', function (e) {
+
+    
+//     if (e.key == ' ' && pause == false) {
+//         fairePause();
+//         pause = true;
+//     } else if (e.key == ' ' && pause == true) {
+//         // On remet le jeu en marche en remettant tous les setInterval
+//         mouvementEnnemis = setInterval(mouvementEnnemis, 100);
+//         nouvelEnnemi = setInterval(nouvelEnnemi, 1000);
+//         nouveauTir = setInterval(nouveauTir, 500);
+//         mouvementTirs = setInterval(mouvementTirs, 50);
+//         nouveauTirEnn = setInterval(nouveauTirEnn, 2000);
+//         mouvementTirsEnn = setInterval(mouvementTirsEnn, 50);
+
+//     }
 // })
 
 // function compteVies(){
@@ -231,11 +275,7 @@ setInterval(mouvementTirsEnn, 50);
 //     }
 // }
 
-// function fairePause(){
-// if(pause==true){
-//     pause = false
-// }
-// }
+
 
 // FIN (brouillon)
 // function fin(){
@@ -247,4 +287,3 @@ setInterval(mouvementTirsEnn, 50);
 //     }
 // }
 // fin();
-
