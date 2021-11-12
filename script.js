@@ -90,7 +90,11 @@ function limiteZone(d) {
 }
 
 creationSuppressionEnnemis();
-setInterval(mouvementEnnemis, 100);
+setInterval(function () {
+    if (pause != true) {
+        mouvementEnnemis()
+    }
+}, 100);
 
 //toutes les 1000ms: un nouvel ennemi est ajouté
 function nouvelEnnemi() {
@@ -101,7 +105,11 @@ function nouvelEnnemi() {
     });
     creationSuppressionEnnemis();
 }
-setInterval(nouvelEnnemi, 1000);
+setInterval(function () {
+    if (pause != true) {
+        nouvelEnnemi()
+    }
+}, 1000);
 
 // Si un ennemi touche le bord opposé, le joueur perd une vie (q9)
 function compteVies() {
@@ -159,8 +167,16 @@ function mouvementTirs() {
     // console.log("X= "+joueurX);
     // console.log("Y= "+joueurY);
 }
-setInterval(nouveauTir, 500);
-setInterval(mouvementTirs, 50);
+setInterval(function () {
+    if (pause != true) {
+        nouveauTir()
+    }
+}, 500);
+setInterval(function () {
+    if (pause != true) {
+        mouvementTirs()
+    }
+}, 50);
 
 
 
@@ -240,18 +256,18 @@ setInterval(function () {
 // }
 
 
-document.addEventListener("keyup", function(event){
-if(event.keyCode == 32){
-    if(pause==true){
-        pause=false;
-    }else{
-        pause=true;
+document.addEventListener("keyup", function (event) {
+    if (event.keyCode == 32) {
+        if (pause == true) {
+            pause = false;
+        } else {
+            pause = true;
+        }
     }
-}
 })
 // d3.select('body').on('keypress', function (e) {
 
-    
+
 //     if (e.key == ' ' && pause == false) {
 //         fairePause();
 //         pause = true;
