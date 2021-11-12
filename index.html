@@ -9,6 +9,14 @@
     <script src="d3.js"></script>
 </head>
 
+<style>
+    .messageFin{
+        background-color: rgb(226, 116, 116) ;
+        display: none;
+    }
+</style>
+
+
 <body>
     <h1>Jeu réalisé par Benjamin Laroche et Estelle Lay</h1>
     <section>
@@ -21,7 +29,6 @@
 
         <!-- Zone du joueur (rouge) -->
         <rect x="0" y="85" width="100" height="15" fill="red" id="zoneRouge"></rect>
-
 
         <defs>
             <!-- Photo de l'ennemi -->
@@ -44,11 +51,9 @@
 
         </defs>
 
-
-
-
     </svg>
 
+    <div class="messageFin"><p>GAME OVER<br>Vous êtes mort<br>Score : <span class="afficheScore">0</span></p><a href="#">Recommencer la partie</a></div>
 
     <!--
 Le script est appelé en dernier, il sera lancé uniquement lorsque le document sera prêt

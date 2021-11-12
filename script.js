@@ -216,7 +216,7 @@ setInterval(mouvementTirsEnn, 50);
 
 
 
-// PAUSE, FIN ETC (brouillon)
+// PAUSE (brouillon)
 // document.addEventListener("keyup",function(e){
 
 // })
@@ -237,7 +237,14 @@ setInterval(mouvementTirsEnn, 50);
 // }
 // }
 
+// FIN (brouillon)
 // function fin(){
-//     d3.select("messageFin").style("display","flex");
+//     if(vies==0){
+//         d3.select("messageFin").style("display","block");
+//     }
+//     if (vies>0){
+//         d3.select("messageFin").style("display","none");
+//     }
 // }
+// fin();
 
