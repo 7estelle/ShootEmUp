@@ -37,7 +37,7 @@ document.addEventListener("keyup", function (event) {
             } else {
                 pause = true;
                 d3.select(".messagePause")
-                    .style("display", "block");
+                     .style("display", "block");
             }
         }
     }
@@ -64,6 +64,10 @@ d3.select('.restart').on('click', function (e) {
     score = 0;
     d3.select(".afficheScore")
     .html(score);
+    d3.select('.ennemi')
+        .creationSuppressionEnnemis();
+    
+
 })
 
 // JOUEUR --------------------------------------------------

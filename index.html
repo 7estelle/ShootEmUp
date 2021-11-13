@@ -11,34 +11,54 @@
 
 <style>
 
-body{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
-.messageFin{
-        background-color: rgb(226, 116, 116) ;
-        width:40%;
+    @font-face {
+        font-family: 'Neon';
+        src:
+            url("./medias/marqueemoon.woff") format("woff"),
+            url("./medias/marqueemoon.woff2") format("woff2");
+    }
+
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .messageFin {
+        background-color: rgb(226, 116, 116);
+        width: 40%;
         height: 30%;
-        box-shadow: 0px 0px 0px 100vw rgba(0,0,0,0.6);
+        box-shadow: 0px 0px 0px 100vw rgba(0, 0, 0, 0.6);
         position: absolute;
         left: 50%;
         top: 50%;
-        transform: translate(-50%,-50%);
+        transform: translate(-50%, -50%);
         display: none;
     }
-.messagePause{
-    background-color: rgb(151, 226, 116) ;
-        width:40%;
+
+    .messagePause {
+        background-color: rgb(151, 226, 116);
+        width: 40%;
         height: 30%;
-        box-shadow: 0px 0px 0px 100vw rgba(0,0,0,0.6);
+        box-shadow: 0px 0px 0px 100vw rgba(0, 0, 0, 0.6);
         position: absolute;
         left: 50%;
         top: 50%;
-        transform: translate(-50%,-50%);
+        transform: translate(-50%, -50%);
         display: none;
-}  
+    }
+
+    body {
+        background-image: url("./medias/fond_brick.jpg");
+        background-size: cover;
+        color: antiquewhite;
+    }
+
+    h1 {
+        font-family: 'Neon';
+        color: white;
+    }
 </style>
 
 
@@ -58,7 +78,7 @@ body{
         <defs>
             <!-- Photo de l'ennemi -->
             <g id="def_ennemi">
-                <image xlink:href="medias/mechant.png" width="7"/>
+                <image xlink:href="medias/mechant.png" width="7" />
             </g>
             <!-- Photo de la balle ennemie -->
             <g id="def_balle_enn">
@@ -82,7 +102,10 @@ body{
         <p>Pause<br>Appuyez sur Espace pour reprendre</p>
     </div>
 
-    <div class="messageFin"><p>GAME OVER<br>Vous êtes mort<br>Score : <span class="afficheScoreFin">0</span></p><a href="#" class="restart">Recommencer la partie</a></div>
+    <div class="messageFin">
+        <p>GAME OVER<br>Vous êtes mort<br>Score : <span class="afficheScoreFin">0</span></p><a href="#"
+            class="restart">Recommencer la partie</a>
+    </div>
 
     <!-- <button class="sucide">button de sucide</button> -->
     <!--
