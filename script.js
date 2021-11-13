@@ -16,8 +16,9 @@ svg.style("background-color", "black");
 svg.append("use")
     .attr("id", "joueur")
     .attr("href", "#def_joueur")
-// .attr("x","50")
-// .attr("y","90");
+// .attr("x","0")
+// .attr("y","90")
+// .attr("z-index","100");
 
 //déplacement du joueur délimité dans la zone
 function positionJoueur(e) {
@@ -79,7 +80,10 @@ function mouvementEnnemis() {
         positionEnnemis = positionEnnemis.filter(limiteZone);
         creationSuppressionEnnemis();
         compteVies();
-       
+        if (vies == 0) {
+            fin();
+        }
+
     }
     //les coordonnées ont été modifiées, on fait la mise à jour
     placeEnnemis();
@@ -114,9 +118,18 @@ setInterval(function () {
 // Si un ennemi touche le bord opposé, le joueur perd une vie (q9)
 function compteVies() {
     vies--;
-    console.log(vies);
     d3.select(".afficheVies")
         .html(vies);
+
+
+
+}
+
+function fin() {
+    console.log("perdu");
+    d3.select(".messageFin")
+        .style("display", "block");
+    pause = true;
 }
 
 
@@ -242,6 +255,26 @@ setInterval(function () {
 }, 50);
 
 
+// pop-up quand on perd 
+
+
+
+
+
+
+
+
+// function fin(){
+//     if(vies==0){
+//         d3.select(".mess")
+//         .remove(".nope")
+//         .attr(".messageFin")
+//         console.log("sa marche")
+//     }
+
+// }
+
+
 
 // PAUSE (brouillon)
 
@@ -288,9 +321,5 @@ document.addEventListener("keyup", function (event) {
 
 
 // FIN (brouillon)
-function fin(){
-    if(vies==0){
-        d3.select(".messageFin").style("display","block");
-    }
-}
-fin();
+// fin()
+;
