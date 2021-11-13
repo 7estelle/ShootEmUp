@@ -1,16 +1,59 @@
-// VARIABLES
-
+// VARIABLES GENERALES -------------------------------------
 let svg = d3.select("svg");
 let zoneRouge = d3.select("#zoneRouge");
 let joueurX = 50;
 let joueurY = 90;
+let joueur = [
+    joueurX,
+    joueurY
+];
 let vies = 3;
 let score = 0;
-let afficheVies = document.querySelector('.afficheVies')
-
 
 svg.style("background-color", "black");
 
+// GESTION DU JEU (vies, score, fin, pause) ------------------
+function retireVie() {
+    vies--;
+    d3.select(".afficheVies")
+        .html(vies);
+}
+
+function augmenteScore() {
+    score = score + 10;
+    d3.select(".afficheScore")
+        .html(score);
+}
+
+// PAUSE
+let pause = false;
+document.addEventListener("keyup", function (event) {
+    if (vies > 0) {
+        if (event.keyCode == 32) {
+            if (pause == true) {
+                pause = false;
+                d3.select(".messagePause")
+                    .style("display", "none");
+            } else {
+                pause = true;
+                d3.select(".messagePause")
+                    .style("display", "block");
+            }
+        }
+    }
+})
+
+// FIN
+function fin() {
+    console.log("perdu");
+    d3.select(".messageFin")
+        .style("display", "block");
+    d3.select(".afficheScoreFin")
+        .html(score);
+    pause = true;
+}
+
+// JOUEUR --------------------------------------------------
 
 // récupérer le design du joueur
 svg.append("use")
@@ -25,18 +68,23 @@ function positionJoueur(e) {
     let pointer = d3.pointer(e);
     joueurX = pointer[0];
     joueurY = pointer[1];
+    joueur.push({
+        x: joueurX,
+        y: joueurY
+    });
+    console.log(joueur);
     svg.select("#joueur")
         .attr("transform", `translate(${joueurX},${joueurY})`);
 }
 
-//déplacement au survol
 zoneRouge.on("mousemove", function (e) {
-    positionJoueur(e);
+    if (pause != true) {
+        positionJoueur(e);
+    }
 })
 
 
-
-// ENNEMIS (q7-q8)
+// ENNEMIS -------------------------------------------------
 let positionEnnemis = [];
 
 function entierAlea(n) {
@@ -72,35 +120,35 @@ function mouvementEnnemis() {
         d.y += d.vy;
     })
 
-    //tous les points dans positionEnnemis ont limiteZone(d) = true
+    // si tous les points dans positionEnnemis ont limiteZone(d) = true : autrement dit, si aucun ennemi n'est arrivé au bord
     if (positionEnnemis.every(limiteZone)) {
         placeEnnemis();
     } else {
-        //au moins un ennemi est est arrivé au bord, on le retire du tableau
+        // au moins un ennemi est est arrivé au bord, on le retire du tableau
         positionEnnemis = positionEnnemis.filter(limiteZone);
         creationSuppressionEnnemis();
-        compteVies();
+        retireVie();
         if (vies == 0) {
             fin();
         }
-
     }
     //les coordonnées ont été modifiées, on fait la mise à jour
     placeEnnemis();
 }
 
 function limiteZone(d) {
-    return d.y < 83;
+    return d.y < 85;
 }
 
 creationSuppressionEnnemis();
+
 setInterval(function () {
     if (pause != true) {
         mouvementEnnemis()
     }
 }, 100);
 
-//toutes les 1000ms: un nouvel ennemi est ajouté
+//toutes les 1500ms: un nouvel ennemi est ajouté
 function nouvelEnnemi() {
     positionEnnemis.push({
         x: entierAlea(100),
@@ -113,33 +161,34 @@ setInterval(function () {
     if (pause != true) {
         nouvelEnnemi()
     }
-}, 1000);
-
-// Si un ennemi touche le bord opposé, le joueur perd une vie (q9)
-function compteVies() {
-    vies--;
-    d3.select(".afficheVies")
-        .html(vies);
+}, 1500);
 
 
+
+// TIRS -------------------------------------------------------
+
+
+// FONCTIONS POUR LES COLLISIONS --------------------------
+function distance(a, b) {
+    let dx = a.x - b.x;
+    let dy = a.y - b.y;
+    return Math.sqrt(dx * dx + dy * dy);
 
 }
 
-function fin() {
-    console.log("perdu");
-    d3.select(".messageFin")
-        .style("display", "block");
-    pause = true;
+function suppressionDansTableau(tableau, critere) {
+    let suppression = false;
+    for (let i = tableau.length - 1; i >= 0; i--) {
+        if (critere(tableau[i])) {
+            tableau.splice(i, 1);
+            suppression = true;
+        }
+    }
+    return suppression;
 }
 
 
-
-
-// TIRS
-
-// // le joueur tire à intervalles réguliers (q10)
-
-// TIRS JOUEUR
+// TIRS JOUEUR ----------------------------------------------
 let coordonneesTir = [];
 
 function nouveauTir() {
@@ -179,7 +228,23 @@ function mouvementTirs() {
     tirsJoueur();
     // console.log("X= "+joueurX);
     // console.log("Y= "+joueurY);
+
+
+    //fonction spécifique pour retirer les ennemis qui ont été touchés par un tir joueur
+    if (suppressionDansTableau(coordonneesTir, d =>
+            suppressionDansTableau(positionEnnemis, position => distance(d, position) < 7))) {
+        // test de collision entre chaque ennemi et chaque tir joueur 
+        //au moins un ennemi et un tir joueur ont été supprimés
+        tirsJoueur();
+        creationSuppressionEnnemis();
+        augmenteScore();
+    } else {
+        //uniquement les coordonnées des tirs joueur ont été modifiées, on fait la mise à jour correspondante
+        placeTirs();
+
+    }
 }
+
 setInterval(function () {
     if (pause != true) {
         nouveauTir()
@@ -192,8 +257,7 @@ setInterval(function () {
 }, 50);
 
 
-
-// TIRS ENNEMIS
+// TIRS ENNEMIS --------------------------------------------
 
 let coordonneesTirEnn = [];
 
@@ -231,6 +295,7 @@ function mouvementTirsEnn() {
         //chaque tir se déplace de sa vitesse en y
         d.y += d.vy;
     })
+    // POUR QUE LES TIRS ENNEMIS DISPARAISSENT LORSQU'ILS TOUCHENT LE BORD
     //tous les points dans positionEnnemis ont limiteZone(d) = true
     if (coordonneesTirEnn.every(limiteZone)) {
         placeEnnemis();
@@ -239,15 +304,33 @@ function mouvementTirsEnn() {
         coordonneesTirEnn = coordonneesTirEnn.filter(limiteZone);
         tirsEnnemis();
     }
+
+
+    //fonction spécifique pour retirer les tirs ennemis qui ont touché le joueur
+    if (suppressionDansTableau(coordonneesTirEnn, d =>
+            suppressionDansTableau(joueur, position => distance(d, position) < 10))) {
+        // test de collision entre chaque tir ennemi et le joueur
+        //au moins un tir ennemi a été supprimé
+        tirsEnnemis();
+        retireVie();
+        if (vies == 0) {
+            fin();
+        }
+    } else {
+        //uniquement les coordonnées des tirs ennemis ont été modifiées, on fait la mise à jour correspondante
+        placeTirs();
+
+    }
+
     tirsEnnemis();
 }
 
-let pause = false;
+
 setInterval(function () {
     if (pause != true) {
         nouveauTirEnn()
     }
-}, 2000);
+}, 2500);
 setInterval(function () {
     if (pause != true) {
         mouvementTirsEnn()
@@ -256,12 +339,6 @@ setInterval(function () {
 
 
 // pop-up quand on perd 
-
-
-
-
-
-
 
 
 // function fin(){
@@ -289,15 +366,6 @@ setInterval(function () {
 // }
 
 
-document.addEventListener("keyup", function (event) {
-    if (event.keyCode == 32) {
-        if (pause == true) {
-            pause = false;
-        } else {
-            pause = true;
-        }
-    }
-})
 // d3.select('body').on('keypress', function (e) {
 
 

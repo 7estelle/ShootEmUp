@@ -11,6 +11,12 @@
 
 <style>
 
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
 .messageFin{
         background-color: rgb(226, 116, 116) ;
         width:40%;
@@ -21,9 +27,18 @@
         top: 50%;
         transform: translate(-50%,-50%);
         display: none;
-        
     }
-    
+.messagePause{
+    background-color: rgb(151, 226, 116) ;
+        width:40%;
+        height: 30%;
+        box-shadow: 0px 0px 0px 100vw rgba(0,0,0,0.6);
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%,-50%);
+        display: none;
+}  
 </style>
 
 
@@ -47,7 +62,7 @@
             </g>
             <!-- Photo de la balle ennemie -->
             <g id="def_balle_enn">
-                <circle r=2 fill="green" id="balleEnn"></circle>
+                <circle r=1 fill="#DB76FF" id="balleEnn"></circle>
             </g>
 
             <!-- Photo du joueur -->
@@ -56,16 +71,20 @@
             </g>
             <!-- Photo de la balle joueur -->
             <g id="def_balle">
-                <circle r=2 fill="yellow" id="balle"></circle>
+                <circle r=1 fill="yellow" id="balle"></circle>
             </g>
 
         </defs>
 
     </svg>
 
-    <div class=" messageFin"><p>GAME OVER<br> CHEE Vous êtes mort<br>Score : <span class="afficheScore">0</span></p><a href="#">Recommencer la partie</a></div>
+    <div class="messagePause">
+        <p>Pause<br>Appuyez sur Espace pour reprendre</p>
+    </div>
 
-    <button class="sucide">button de sucide</button>
+    <div class="messageFin"><p>GAME OVER<br>Vous êtes mort<br>Score : <span class="afficheScoreFin">0</span></p><a href="#">Recommencer la partie</a></div>
+
+    <!-- <button class="sucide">button de sucide</button> -->
     <!--
 Le script est appelé en dernier, il sera lancé uniquement lorsque le document sera prêt
 alternative: document.addEventListener("DOMContentLoaded", function() {/*...*/ });
