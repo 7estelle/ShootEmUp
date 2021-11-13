@@ -12,7 +12,7 @@ let score = 0;
 
 svg.style("background-color", "black");
 
-// GESTION DU JEU (vies, score, fin, pause) ------------------
+// GESTION DU JEU (vies, score, fin, pause, recommencer la partie) ------------------
 function retireVie() {
     vies--;
     d3.select(".afficheVies")
@@ -52,6 +52,19 @@ function fin() {
         .html(score);
     pause = true;
 }
+
+// RECOMMENCER LA PARTIE
+d3.select('.restart').on('click', function (e) {
+    d3.select(".messageFin")
+    .style("display", "none");
+    pause=false;
+    vies = 3;
+    d3.select(".afficheVies")
+    .html(vies);
+    score = 0;
+    d3.select(".afficheScore")
+    .html(score);
+})
 
 // JOUEUR --------------------------------------------------
 
@@ -293,7 +306,7 @@ function placeTirsEnn() {
 function mouvementTirsEnn() {
     coordonneesTirEnn.forEach(d => {
         //chaque tir se déplace de sa vitesse en y
-        d.y += d.vy;
+        d.y += 3;
     })
     // POUR QUE LES TIRS ENNEMIS DISPARAISSENT LORSQU'ILS TOUCHENT LE BORD
     //tous les points dans positionEnnemis ont limiteZone(d) = true
