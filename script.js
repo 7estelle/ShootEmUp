@@ -396,29 +396,29 @@ function fin() {
 }
 
 // RECOMMENCER LA PARTIE
-d3.select('.restart').on('click', function (e) {
+// d3.select('.restart').on('click', function (e) {
     
-    d3.select(".messageFin")
-    .style("display", "none");
-    pause=false;
-    vies = 3;
-    d3.select(".afficheVies")
-    .html(vies);
-    score = 0;
-    d3.select(".afficheScore")
-    .html(score);
-    joueur.splice(0,joueur.length);
-    positionEnnemis.splice(0,positionEnnemis.length);
-    coordonneesTirEnn.splice(0,coordonneesTirEnn.length);
-    coordonneesTir.splice(0,coordonneesTir.length);
-    // joueur.length=0;
-    // positionEnnemis.length=0;
-    // coordonneesTirEnn.length=0;
-    // coordonneesTir.length=0;
-    // joueur=[];
-    // positionEnnemis = [];
-    // coordonneesTirEnn = [];
-    // coordonneesTir = [];
-    // d3.selectAll('.ennemi')
-    //     .creationSuppressionEnnemis();
-})
+//     d3.select(".messageFin")
+//     .style("display", "none");
+//     pause=false;
+//     vies = 3;
+//     d3.select(".afficheVies")
+//     .html(vies);
+//     score = 0;
+//     d3.select(".afficheScore")
+//     .html(score);
+//     // joueur.splice(0,joueur.length);
+//     // positionEnnemis.splice(0,positionEnnemis.length);
+//     // coordonneesTirEnn.splice(0,coordonneesTirEnn.length);
+//     // coordonneesTir.splice(0,coordonneesTir.length);
+//     // joueur.length=0;
+//     // positionEnnemis.length=0;
+//     // coordonneesTirEnn.length=0;
+//     // coordonneesTir.length=0;
+//     // joueur=[];
+//     // positionEnnemis = [];
+//     // coordonneesTirEnn = [];
+//     // coordonneesTir = [];
+//     // d3.selectAll('.ennemi')
+//     //     .creationSuppressionEnnemis();
+// })
