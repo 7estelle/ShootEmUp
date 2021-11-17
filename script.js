@@ -19,8 +19,9 @@ svg.style("background-color", "black");
 svg.append("use")
     .attr("id", "joueur")
     .attr("href", "#def_joueur")
-// .attr("x","0")
+// .attr("x","50")
 // .attr("y","90")
+// .attr("transform", "translate(50,90)");
 // .attr("z-index","100");
 
 //déplacement du joueur délimité dans la zone
@@ -32,7 +33,7 @@ function positionJoueur(e) {
         x: joueurX,
         y: joueurY
     });
-    console.log(joueur);
+    // console.log(joueur);
     svg.select("#joueur")
         .attr("transform", `translate(${joueurX},${joueurY})`);
 }
@@ -51,20 +52,47 @@ function entierAlea(n) {
     return Math.floor(Math.random() * n);
 }
 
-function vitesseAlea(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+// function vitesseAlea(min, max) {
+//     min = Math.ceil(min);
+//     max = Math.floor(max);
+//     return Math.floor(Math.random() * (max - min + 1)) + min;
+// }
 
 function creationSuppressionEnnemis() {
+    let link =
     svg.selectAll(".ennemi")
-        .data(positionEnnemis)
-        .enter()
+        .data(positionEnnemis);
+        link.enter()
         .append("use")
         .attr("class", "ennemi")
         .attr("href", "#def_ennemi")
-        .exit()
+        link.exit()
+        .remove();
+    placeEnnemis();
+}
+
+function creationSuppressionEnnemis2() {
+    let link =
+    svg.selectAll(".ennemi")
+        .data(positionEnnemis);
+        link.enter()
+        .append("use")
+        .attr("class", "ennemi")
+        .attr("href", "#def_ennemi2")
+        link.exit()
+        .remove();
+    placeEnnemis();
+}
+
+function creationSuppressionEnnemis3() {
+    let link =
+    svg.selectAll(".ennemi")
+        .data(positionEnnemis);
+        link.enter()
+        .append("use")
+        .attr("class", "ennemi")
+        .attr("href", "#def_ennemi3")
+        link.exit()
         .remove();
     placeEnnemis();
 }
@@ -110,12 +138,31 @@ setInterval(function () {
 
 //toutes les 1500ms: un nouvel ennemi est ajouté
 function nouvelEnnemi() {
-    positionEnnemis.push({
-        x: entierAlea(100),
-        y: 0,
-        vy: vitesseAlea(1, 3)
-    });
-    creationSuppressionEnnemis();
+console.log("score : "+score);
+    if (score<100){
+        positionEnnemis.push({
+            x: entierAlea(100),
+            y: 0,
+            vy: 1
+        });
+        creationSuppressionEnnemis();
+    }
+    if (score>=100){
+        positionEnnemis.push({
+            x: entierAlea(100),
+            y: 0,
+            vy: 2
+        });
+        creationSuppressionEnnemis2();
+    }
+    if (score>=200){
+        positionEnnemis.push({
+            x: entierAlea(100),
+            y: 0,
+            vy: 3
+        });
+        creationSuppressionEnnemis3();
+    }
 }
 setInterval(function () {
     if (pause != true) {
@@ -163,14 +210,12 @@ function nouveauTir() {
 }
 
 function tirsJoueur() {
-    svg
-        .selectAll(".balle")
-        .data(coordonneesTir)
-        .enter()
+    let link = svg.selectAll(".balle").data(coordonneesTir);
+        link.enter()
         .append("use")
         .attr("class", "balle")
         .attr("href", "#def_balle")
-        .exit()
+        link.exit()
         .remove();
     placeTirs();
 }
@@ -197,6 +242,20 @@ function mouvementTirs() {
         //au moins un ennemi et un tir joueur ont été supprimés
         tirsJoueur();
         creationSuppressionEnnemis();
+        augmenteScore();
+    } else {
+        //uniquement les coordonnées des tirs joueur ont été modifiées, on fait la mise à jour correspondante
+        placeTirs();
+
+    }
+
+    //fonction spécifique pour retirer les tirs ennemis qui ont été touchés par un tir joueur
+    if (suppressionDansTableau(coordonneesTir, d =>
+            suppressionDansTableau(coordonneesTirEnn, position => distance(d, position) < 4))) {
+        // test de collision entre chaque ennemi et chaque tir joueur 
+        //au moins un ennemi et un tir joueur ont été supprimés
+        tirsJoueur();
+        tirsEnnemis();
         augmenteScore();
     } else {
         //uniquement les coordonnées des tirs joueur ont été modifiées, on fait la mise à jour correspondante
@@ -233,14 +292,12 @@ function nouveauTirEnn() {
 }
 
 function tirsEnnemis() {
-    svg
-        .selectAll(".balleEnn")
-        .data(coordonneesTirEnn)
-        .enter()
+    let link = svg.selectAll(".balleEnn").data(coordonneesTirEnn);
+        link.enter()
         .append("use")
         .attr("class", "balleEnn")
         .attr("href", "#def_balle_enn")
-        .exit()
+        link.exit()
         .remove();
     placeTirsEnn();
 }
@@ -358,7 +415,7 @@ setInterval(function () {
 function retireVie() {
     vies--;
     d3.select(".afficheVies")
-        .html(vies);
+        .html(vies); 
 }
 
 function augmenteScore() {
@@ -379,7 +436,7 @@ document.addEventListener("keyup", function (event) {
             } else {
                 pause = true;
                 d3.select(".messagePause")
-                     .style("display", "block");
+                    .style("display", "block");
             }
         }
     }
@@ -394,31 +451,3 @@ function fin() {
         .html(score);
     pause = true;
 }
-
-// RECOMMENCER LA PARTIE
-// d3.select('.restart').on('click', function (e) {
-    
-//     d3.select(".messageFin")
-//     .style("display", "none");
-//     pause=false;
-//     vies = 3;
-//     d3.select(".afficheVies")
-//     .html(vies);
-//     score = 0;
-//     d3.select(".afficheScore")
-//     .html(score);
-//     // joueur.splice(0,joueur.length);
-//     // positionEnnemis.splice(0,positionEnnemis.length);
-//     // coordonneesTirEnn.splice(0,coordonneesTirEnn.length);
-//     // coordonneesTir.splice(0,coordonneesTir.length);
-//     // joueur.length=0;
-//     // positionEnnemis.length=0;
-//     // coordonneesTirEnn.length=0;
-//     // coordonneesTir.length=0;
-//     // joueur=[];
-//     // positionEnnemis = [];
-//     // coordonneesTirEnn = [];
-//     // coordonneesTir = [];
-//     // d3.selectAll('.ennemi')
-//     //     .creationSuppressionEnnemis();
-// })
