@@ -90,16 +90,19 @@
             </g>
             <!-- Photo de la balle ennemie -->
             <g id="def_balle_enn">
-                <circle r=1 fill="#DB76FF" id="balleEnn"></circle>
+                <image xlink:href="medias/balle-ennemi.png" width="5" />
+                <!-- <circle r=1 fill="#DB76FF" id="balleEnn"></circle> -->
             </g>
 
             <!-- Photo du joueur -->
             <g id="def_joueur">
-                <circle r=5 fill="blue" id="joueur" style="pointer-events: none;"></circle>
+                <image xlink:href="medias/joueur.svg" width="10" style="pointer-events: none;"/>
+                <!-- <circle r=5 fill="blue" id="joueur" style="pointer-events: none;"></circle> -->
             </g>
             <!-- Photo de la balle joueur -->
             <g id="def_balle">
-                <circle r=1 fill="yellow" id="balle"></circle>
+                <image xlink:href="medias/balle-joueur.png" width="2" />
+                <!-- <circle r=1 fill="yellow" id="balle"></circle> -->
             </g>
 
         </defs>
@@ -108,6 +111,7 @@
 
     <div class="messagePause">
         <p>Pause<br>Appuyez sur Espace pour reprendre</p>
+        <a href="javascript:window.location.reload()" class="restart">Recommencer la partie</a>
     </div>
 
     <div class="messageFin">

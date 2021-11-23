@@ -21,14 +21,12 @@ svg.append("use")
     .attr("href", "#def_joueur")
 // .attr("x","50")
 // .attr("y","90")
-.attr("transform", "translate(50,90)");
+.attr("transform", "translate(45,90)");
 // .attr("z-index","100");
 
 //déplacement du joueur délimité dans la zone
 function positionJoueur(e) {
-    svg.append("use")
-    .attr("id", "joueur")
-    .attr("href", "#def_joueur")
+
     // .attr("transform", "translate(50,90)");
     let pointer = d3.pointer(e);
     joueurX = pointer[0];
@@ -342,8 +340,7 @@ function mouvementTirsEnn() {
 
 
     //fonction spécifique pour retirer les tirs ennemis qui ont touché le joueur
-    if (suppressionDansTableau(coordonneesTirEnn, d =>
-            suppressionDansTableau(joueur, position => distance(d, position) < 10))) {
+    if (suppressionDansTableau(coordonneesTirEnn, d =>(distance(d, {x: joueurX, y: joueurY}) < 10))) {
         // test de collision entre chaque tir ennemi et le joueur
         //au moins un tir ennemi a été supprimé
         tirsEnnemis();
