@@ -21,11 +21,15 @@ svg.append("use")
     .attr("href", "#def_joueur")
 // .attr("x","50")
 // .attr("y","90")
-// .attr("transform", "translate(50,90)");
+.attr("transform", "translate(50,90)");
 // .attr("z-index","100");
 
 //déplacement du joueur délimité dans la zone
 function positionJoueur(e) {
+    svg.append("use")
+    .attr("id", "joueur")
+    .attr("href", "#def_joueur")
+    // .attr("transform", "translate(50,90)");
     let pointer = d3.pointer(e);
     joueurX = pointer[0];
     joueurY = pointer[1];
@@ -35,7 +39,7 @@ function positionJoueur(e) {
     });
     // console.log(joueur);
     svg.select("#joueur")
-        .attr("transform", `translate(${joueurX},${joueurY})`);
+        .attr(`transform`, `translate(${joueurX},${joueurY})`);
 }
 
 zoneRouge.on("mousemove", function (e) {
@@ -59,6 +63,7 @@ function entierAlea(n) {
 // }
 
 function creationSuppressionEnnemis() {
+
     let link =
     svg.selectAll(".ennemi")
         .data(positionEnnemis);
@@ -69,9 +74,11 @@ function creationSuppressionEnnemis() {
         link.exit()
         .remove();
     placeEnnemis();
+
 }
 
 function creationSuppressionEnnemis2() {
+
     let link =
     svg.selectAll(".ennemi")
         .data(positionEnnemis);
@@ -82,9 +89,11 @@ function creationSuppressionEnnemis2() {
         link.exit()
         .remove();
     placeEnnemis();
+
 }
 
 function creationSuppressionEnnemis3() {
+
     let link =
     svg.selectAll(".ennemi")
         .data(positionEnnemis);
@@ -95,6 +104,7 @@ function creationSuppressionEnnemis3() {
         link.exit()
         .remove();
     placeEnnemis();
+
 }
 
 function placeEnnemis() {
@@ -115,6 +125,8 @@ function mouvementEnnemis() {
         // au moins un ennemi est est arrivé au bord, on le retire du tableau
         positionEnnemis = positionEnnemis.filter(limiteZone);
         creationSuppressionEnnemis();
+        creationSuppressionEnnemis2();
+        creationSuppressionEnnemis3();
         retireVie();
         if (vies == 0) {
             fin();
@@ -147,7 +159,7 @@ console.log("score : "+score);
         });
         creationSuppressionEnnemis();
     }
-    if (score>=100){
+    if (score>=100 && score<200){
         positionEnnemis.push({
             x: entierAlea(100),
             y: 0,
@@ -242,6 +254,8 @@ function mouvementTirs() {
         //au moins un ennemi et un tir joueur ont été supprimés
         tirsJoueur();
         creationSuppressionEnnemis();
+        creationSuppressionEnnemis2();
+        creationSuppressionEnnemis3();
         augmenteScore();
     } else {
         //uniquement les coordonnées des tirs joueur ont été modifiées, on fait la mise à jour correspondante
@@ -273,7 +287,7 @@ setInterval(function () {
     if (pause != true) {
         mouvementTirs()
     }
-}, 50);
+}, 25);
 
 
 // TIRS ENNEMIS --------------------------------------------
@@ -320,6 +334,10 @@ function mouvementTirsEnn() {
         //au moins un ennemi est est arrivé au bord, on le retire du tableau
         coordonneesTirEnn = coordonneesTirEnn.filter(limiteZone);
         tirsEnnemis();
+        retireVie();
+        if (vies == 0) {
+            fin();
+        }
     }
 
 
