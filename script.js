@@ -21,7 +21,7 @@ svg.append("use")
     .attr("href", "#def_joueur")
 // .attr("x","50")
 // .attr("y","90")
-.attr("transform", "translate(45,90)");
+.attr("transform", "translate(50,85)");
 // .attr("z-index","100");
 
 //déplacement du joueur délimité dans la zone
@@ -29,8 +29,8 @@ function positionJoueur(e) {
 
     // .attr("transform", "translate(50,90)");
     let pointer = d3.pointer(e);
-    joueurX = pointer[0];
-    joueurY = pointer[1];
+    joueurX = pointer[0] ;
+    joueurY = pointer[1] ;
     joueur.push({
         x: joueurX,
         y: joueurY
@@ -212,7 +212,7 @@ function nouveauTir() {
     // console.log(joueurX, joueurY);
     coordonneesTir.push({
         x: joueurX,
-        y: joueurY,
+        y: joueurY - 10,
         vy: -1
     });
     tirsJoueur();
@@ -295,7 +295,7 @@ let coordonneesTirEnn = [];
 function nouveauTirEnn() {
     positionEnnemis.forEach(position => {
         coordonneesTirEnn.push({
-            x: position.x + 4,
+            x: position.x +1,
             y: position.y + 10,
             vy: position.vy
         });
