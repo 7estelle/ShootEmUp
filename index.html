@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="medias/joueur.svg"/>
     <title>Jeu Estelle et Benjamin</title>
     <script src="d3.js"></script>
 </head>
@@ -23,6 +24,9 @@
         align-items: center;
         flex-direction: column;
         font-family: 'Helvetica';
+        background-image: url("medias/fond-briques.jpg");
+        background-size: cover;
+        color: antiquewhite;
     }
 
     .messageFin {
@@ -49,12 +53,6 @@
         display: none;
     }
 
-    body {
-        background-image: url("medias/fond-briques.jpg");
-        background-size: cover;
-        color: antiquewhite;
-    }
-
     h1 {
         font-family: 'Neon';
         color: white;
@@ -71,9 +69,11 @@
     </section>
 
     <svg width="75vmin" height="75vmin" viewBox="0 0 100 100">
-
+        
+        <image xlink:href="medias/fond.gif" alt="" x="0" y="0" width="100" height="100"/>
+        <image xlink:href="medias/zonejoueur.png" alt="" x="0" y="0" width="100" height="100"/>
         <!-- Zone du joueur (rouge) -->
-        <rect x="0" y="85" width="100" height="15" fill="red" id="zoneRouge"></rect>
+        <rect x="0" y="85" width="100" height="15" id="zoneRouge" fill="transparent"></rect>
 
         <defs>
             <!-- Photo de l'ennemi -->
@@ -119,7 +119,6 @@
             href="javascript:window.location.reload()" class="restart">Recommencer la partie</a>
     </div>
 
-    <!-- <button class="sucide">button de sucide</button> -->
     <!--
 Le script est appelé en dernier, il sera lancé uniquement lorsque le document sera prêt
 alternative: document.addEventListener("DOMContentLoaded", function() {/*...*/ });

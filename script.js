@@ -19,9 +19,9 @@ svg.style("background-color", "black");
 svg.append("use")
     .attr("id", "joueur")
     .attr("href", "#def_joueur")
-// .attr("x","50")
-// .attr("y","90")
-.attr("transform", "translate(50,85)");
+    // .attr("x","50")
+    // .attr("y","90")
+    .attr("transform", "translate(50,85)");
 // .attr("z-index","100");
 
 //déplacement du joueur délimité dans la zone
@@ -29,8 +29,8 @@ function positionJoueur(e) {
 
     // .attr("transform", "translate(50,90)");
     let pointer = d3.pointer(e);
-    joueurX = pointer[0] ;
-    joueurY = pointer[1] ;
+    joueurX = pointer[0];
+    joueurY = pointer[1];
     joueur.push({
         x: joueurX,
         y: joueurY
@@ -63,13 +63,13 @@ function entierAlea(n) {
 function creationSuppressionEnnemis() {
 
     let link =
-    svg.selectAll(".ennemi")
+        svg.selectAll(".ennemi")
         .data(positionEnnemis);
-        link.enter()
+    link.enter()
         .append("use")
         .attr("class", "ennemi")
         .attr("href", "#def_ennemi")
-        link.exit()
+    link.exit()
         .remove();
     placeEnnemis();
 
@@ -78,13 +78,13 @@ function creationSuppressionEnnemis() {
 function creationSuppressionEnnemis2() {
 
     let link =
-    svg.selectAll(".ennemi")
+        svg.selectAll(".ennemi")
         .data(positionEnnemis);
-        link.enter()
+    link.enter()
         .append("use")
         .attr("class", "ennemi")
         .attr("href", "#def_ennemi2")
-        link.exit()
+    link.exit()
         .remove();
     placeEnnemis();
 
@@ -93,13 +93,13 @@ function creationSuppressionEnnemis2() {
 function creationSuppressionEnnemis3() {
 
     let link =
-    svg.selectAll(".ennemi")
+        svg.selectAll(".ennemi")
         .data(positionEnnemis);
-        link.enter()
+    link.enter()
         .append("use")
         .attr("class", "ennemi")
         .attr("href", "#def_ennemi3")
-        link.exit()
+    link.exit()
         .remove();
     placeEnnemis();
 
@@ -148,8 +148,8 @@ setInterval(function () {
 
 //toutes les 1500ms: un nouvel ennemi est ajouté
 function nouvelEnnemi() {
-console.log("score : "+score);
-    if (score<100){
+    // console.log("score : " + score);
+    if (score < 100) {
         positionEnnemis.push({
             x: entierAlea(100),
             y: 0,
@@ -157,7 +157,7 @@ console.log("score : "+score);
         });
         creationSuppressionEnnemis();
     }
-    if (score>=100 && score<200){
+    if (score >= 100 && score < 200) {
         positionEnnemis.push({
             x: entierAlea(100),
             y: 0,
@@ -165,7 +165,7 @@ console.log("score : "+score);
         });
         creationSuppressionEnnemis2();
     }
-    if (score>=200){
+    if (score >= 200) {
         positionEnnemis.push({
             x: entierAlea(100),
             y: 0,
@@ -174,12 +174,20 @@ console.log("score : "+score);
         creationSuppressionEnnemis3();
     }
 }
-setInterval(function () {
-    if (pause != true) {
-        nouvelEnnemi()
-    }
-}, 1500);
-
+// console.log("score : " + score);
+// if (score >= 200) {
+//     setInterval(function () { 
+//         if (pause != true) {
+//             nouvelEnnemi()
+//         }
+//     }, 500);
+// } else {
+    setInterval(function () {
+        if (pause != true) {
+            nouvelEnnemi()
+        }
+    }, 1100);
+// }
 
 
 // TIRS -------------------------------------------------------
@@ -221,11 +229,11 @@ function nouveauTir() {
 
 function tirsJoueur() {
     let link = svg.selectAll(".balle").data(coordonneesTir);
-        link.enter()
+    link.enter()
         .append("use")
         .attr("class", "balle")
         .attr("href", "#def_balle")
-        link.exit()
+    link.exit()
         .remove();
     placeTirs();
 }
@@ -295,7 +303,7 @@ let coordonneesTirEnn = [];
 function nouveauTirEnn() {
     positionEnnemis.forEach(position => {
         coordonneesTirEnn.push({
-            x: position.x +1,
+            x: position.x + 1,
             y: position.y + 10,
             vy: position.vy
         });
@@ -305,11 +313,11 @@ function nouveauTirEnn() {
 
 function tirsEnnemis() {
     let link = svg.selectAll(".balleEnn").data(coordonneesTirEnn);
-        link.enter()
+    link.enter()
         .append("use")
         .attr("class", "balleEnn")
         .attr("href", "#def_balle_enn")
-        link.exit()
+    link.exit()
         .remove();
     placeTirsEnn();
 }
@@ -340,7 +348,10 @@ function mouvementTirsEnn() {
 
 
     //fonction spécifique pour retirer les tirs ennemis qui ont touché le joueur
-    if (suppressionDansTableau(coordonneesTirEnn, d =>(distance(d, {x: joueurX, y: joueurY}) < 10))) {
+    if (suppressionDansTableau(coordonneesTirEnn, d => (distance(d, {
+            x: joueurX,
+            y: joueurY
+        }) < 10))) {
         // test de collision entre chaque tir ennemi et le joueur
         //au moins un tir ennemi a été supprimé
         tirsEnnemis();
@@ -430,7 +441,7 @@ setInterval(function () {
 function retireVie() {
     vies--;
     d3.select(".afficheVies")
-        .html(vies); 
+        .html(vies);
 }
 
 function augmenteScore() {
