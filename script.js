@@ -462,7 +462,7 @@ document.addEventListener("keyup", function (event) {
             } else {
                 pause = true;
                 d3.select(".messagePause")
-                    .style("display", "block");
+                    .style("display", "flex");
             }
         }
     }
@@ -472,7 +472,7 @@ document.addEventListener("keyup", function (event) {
 function fin() {
     console.log("perdu");
     d3.select(".messageFin")
-        .style("display", "block");
+        .style("display", "flex");
     d3.select(".afficheScoreFin")
         .html(score);
     pause = true;
