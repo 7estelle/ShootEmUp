@@ -19,15 +19,10 @@ svg.style("background-color", "black");
 svg.append("use")
     .attr("id", "joueur")
     .attr("href", "#def_joueur")
-    // .attr("x","50")
-    // .attr("y","90")
     .attr("transform", "translate(50,85)");
-// .attr("z-index","100");
 
 //déplacement du joueur délimité dans la zone
 function positionJoueur(e) {
-
-    // .attr("transform", "translate(50,90)");
     let pointer = d3.pointer(e);
     joueurX = pointer[0];
     joueurY = pointer[1];
@@ -35,7 +30,6 @@ function positionJoueur(e) {
         x: joueurX,
         y: joueurY
     });
-    // console.log(joueur);
     svg.select("#joueur")
         .attr(`transform`, `translate(${joueurX},${joueurY})`);
 }
@@ -54,14 +48,7 @@ function entierAlea(n) {
     return Math.floor(Math.random() * n);
 }
 
-// function vitesseAlea(min, max) {
-//     min = Math.ceil(min);
-//     max = Math.floor(max);
-//     return Math.floor(Math.random() * (max - min + 1)) + min;
-// }
-
 function creationSuppressionEnnemis() {
-
     let link =
         svg.selectAll(".ennemi")
         .data(positionEnnemis);
@@ -72,11 +59,9 @@ function creationSuppressionEnnemis() {
     link.exit()
         .remove();
     placeEnnemis();
-
 }
 
 function creationSuppressionEnnemis2() {
-
     let link =
         svg.selectAll(".ennemi")
         .data(positionEnnemis);
@@ -87,11 +72,9 @@ function creationSuppressionEnnemis2() {
     link.exit()
         .remove();
     placeEnnemis();
-
 }
 
 function creationSuppressionEnnemis3() {
-
     let link =
         svg.selectAll(".ennemi")
         .data(positionEnnemis);
@@ -102,7 +85,6 @@ function creationSuppressionEnnemis3() {
     link.exit()
         .remove();
     placeEnnemis();
-
 }
 
 function placeEnnemis() {
@@ -146,9 +128,8 @@ setInterval(function () {
     }
 }, 100);
 
-//toutes les 1500ms: un nouvel ennemi est ajouté
+//toutes les 1300ms: un nouvel ennemi est ajouté
 function nouvelEnnemi() {
-    // console.log("score : " + score);
     if (score < 100) {
         positionEnnemis.push({
             x: entierAlea(100),
@@ -174,20 +155,11 @@ function nouvelEnnemi() {
         creationSuppressionEnnemis3();
     }
 }
-// console.log("score : " + score);
-// if (score >= 200) {
-//     setInterval(function () { 
-//         if (pause != true) {
-//             nouvelEnnemi()
-//         }
-//     }, 500);
-// } else {
     setInterval(function () {
         if (pause != true) {
             nouvelEnnemi()
         }
-    }, 1100);
-// }
+    }, 1300);
 
 
 // TIRS -------------------------------------------------------
@@ -217,14 +189,12 @@ function suppressionDansTableau(tableau, critere) {
 let coordonneesTir = [];
 
 function nouveauTir() {
-    // console.log(joueurX, joueurY);
     coordonneesTir.push({
         x: joueurX,
         y: joueurY - 10,
         vy: -1
     });
     tirsJoueur();
-    // console.log(coordonneesTir);
 }
 
 function tirsJoueur() {
@@ -249,15 +219,12 @@ function mouvementTirs() {
         d.y = d.y - 1;
     })
     tirsJoueur();
-    // console.log("X= "+joueurX);
-    // console.log("Y= "+joueurY);
-
 
     //fonction spécifique pour retirer les ennemis qui ont été touchés par un tir joueur
     if (suppressionDansTableau(coordonneesTir, d =>
             suppressionDansTableau(positionEnnemis, position => distance(d, position) < 7))) {
         // test de collision entre chaque ennemi et chaque tir joueur 
-        //au moins un ennemi et un tir joueur ont été supprimés
+        // au moins un ennemi et un tir joueur ont été supprimés
         tirsJoueur();
         creationSuppressionEnnemis();
         creationSuppressionEnnemis2();
@@ -273,12 +240,12 @@ function mouvementTirs() {
     if (suppressionDansTableau(coordonneesTir, d =>
             suppressionDansTableau(coordonneesTirEnn, position => distance(d, position) < 4))) {
         // test de collision entre chaque ennemi et chaque tir joueur 
-        //au moins un ennemi et un tir joueur ont été supprimés
+        // au moins un ennemi et un tir joueur ont été supprimés
         tirsJoueur();
         tirsEnnemis();
         augmenteScore();
     } else {
-        //uniquement les coordonnées des tirs joueur ont été modifiées, on fait la mise à jour correspondante
+        // uniquement les coordonnées des tirs joueur ont été modifiées, on fait la mise à jour correspondante
         placeTirs();
 
     }
@@ -353,14 +320,14 @@ function mouvementTirsEnn() {
             y: joueurY
         }) < 10))) {
         // test de collision entre chaque tir ennemi et le joueur
-        //au moins un tir ennemi a été supprimé
+        // au moins un tir ennemi a été supprimé
         tirsEnnemis();
         retireVie();
         if (vies == 0) {
             fin();
         }
     } else {
-        //uniquement les coordonnées des tirs ennemis ont été modifiées, on fait la mise à jour correspondante
+        // uniquement les coordonnées des tirs ennemis ont été modifiées, on fait la mise à jour correspondante
         placeTirs();
 
     }
@@ -379,63 +346,6 @@ setInterval(function () {
         mouvementTirsEnn()
     }
 }, 50);
-
-
-// pop-up quand on perd 
-
-
-// function fin(){
-//     if(vies==0){
-//         d3.select(".mess")
-//         .remove(".nope")
-//         .attr(".messageFin")
-//         console.log("sa marche")
-//     }
-
-// }
-
-
-
-// PAUSE (brouillon)
-
-
-// function fairePause() {
-//     clearInterval(mouvementEnnemis);
-//     clearInterval(nouvelEnnemi);
-//     clearInterval(mouvementTirs);
-//     clearInterval(nouveauTir);
-//     clearInterval(mouvementTirsEnn);
-//     clearInterval(nouveauTirEnn);
-// }
-
-
-// d3.select('body').on('keypress', function (e) {
-
-
-//     if (e.key == ' ' && pause == false) {
-//         fairePause();
-//         pause = true;
-//     } else if (e.key == ' ' && pause == true) {
-//         // On remet le jeu en marche en remettant tous les setInterval
-//         mouvementEnnemis = setInterval(mouvementEnnemis, 100);
-//         nouvelEnnemi = setInterval(nouvelEnnemi, 1000);
-//         nouveauTir = setInterval(nouveauTir, 500);
-//         mouvementTirs = setInterval(mouvementTirs, 50);
-//         nouveauTirEnn = setInterval(nouveauTirEnn, 2000);
-//         mouvementTirsEnn = setInterval(mouvementTirsEnn, 50);
-
-//     }
-// })
-// pour le comptage des vies 
-
-
-
-
-// FIN (brouillon)
-// fin()
-
-
-
 
 // GESTION DU JEU (vies, score, fin, pause, recommencer la partie) ------------------
 function retireVie() {

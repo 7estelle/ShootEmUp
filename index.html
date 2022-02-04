@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="medias/joueur.svg" />
+    <link rel="icon" type="image/png" href="medias/joueur.png" />
     <title>Jeu Estelle et Benjamin</title>
     <script src="d3.js"></script>
 </head>
@@ -82,6 +82,7 @@
         background-size: cover;
         color: antiquewhite;
         overflow-y: hidden;
+
     }
 
     h1 {
@@ -91,23 +92,29 @@
         position: absolute;
         left: 50px;
         top: 300px;
-        transform: rotate(-10deg)
+        transform: rotate(-10deg);
+        z-index: -2;
     }
 
     .createur {
-        font-size: 4rem;
+        font-size: 2.5rem;
         text-decoration: underline rgb(255, 255, 255);
 
     }
 
-    .décor-arcade {
+    .decor-arcade {
         position: absolute;
-        width: 55vw;
-        height: 2750px;
-        top: -400px;
-        right: 23.5%;
+        width: 749px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
         z-index: -1;
+    }
 
+    .container {
+        position: relative;
+        width: 100%;
+        height: 100vh;
     }
 
     .magie {
@@ -119,28 +126,30 @@
         padding: 1%;
         box-shadow: -14px 8px 0px rgba(255, 255, 255);
         border: solid 10px White;
+        z-index: -2;
     }
 
     .position {
         position: absolute;
-        top: 60px;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
     }
 </style>
 
 
 <body>
-    <h1>Jeu réalisé par <br> <span class="createur"> Benjamin Laroche </span> <br> et <br> <span
-            class="createur">Estelle Lay</span></h1>
+    <h1>Jeu réalisé par <br> <span class="createur"> Benjamin Laroche </span> <br> et <br> <span class="createur">Estelle Lay</span></h1>
+    <!-- Panneau qui indique le nombre de vies restantes en haut -->
     <section class="magie">
-        <p>Nombre de vies restantes : <span class="afficheVies">3</span></p>
+        <p>Vies restantes : <span class="afficheVies">3</span></p>
         <p>Score : <span class="afficheScore">0</span></p>
-        <!-- Panneau qui indique le nombre de vies restantes en haut -->
     </section>
+    <div class="container">
+        <img src="medias/arcade.png" class="decor-arcade" alt="" style="user-select:none;">
+    </div>
 
-    <img class="décor-arcade" src="medias/test-arcade.png" alt="">
-
-
-    <svg class="position" width="75vmin" height="75vmin" viewBox="0 0 100 100">
+    <svg class="position" width="570px" height="570px" viewBox="0 0 100 100">
 
         <image xlink:href="medias/fond.gif" alt="" x="0" y="0" width="100" height="100" />
         <image xlink:href="medias/zonejoueur.png" alt="" x="0" y="0" width="100" height="100" />
@@ -163,18 +172,15 @@
             <!-- Photo de la balle ennemie -->
             <g id="def_balle_enn">
                 <image xlink:href="medias/balle-ennemi.png" width="5" />
-                <!-- <circle r=1 fill="#DB76FF" id="balleEnn"></circle> -->
             </g>
 
             <!-- Photo du joueur -->
             <g id="def_joueur">
                 <image xlink:href="medias/joueur.png" width="10" style="pointer-events: none;" x="-4" y="-4" />
-                <!-- <circle r=5 fill="blue" id="joueur" style="pointer-events: none;"></circle> -->
             </g>
             <!-- Photo de la balle joueur -->
             <g id="def_balle">
                 <image xlink:href="medias/balle-joueur.png" width="2" />
-                <!-- <circle r=1 fill="yellow" id="balle"></circle> -->
             </g>
 
         </defs>
